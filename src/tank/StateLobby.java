@@ -1,41 +1,37 @@
 package tank;
-import org.newdawn.slick.*;
+import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-public class StateMain extends BasicGameState
+public class StateLobby extends BasicGameState
 	{
 	Tank tank;
-	public static Music music;
 	/*-----------------------------------------------------------------------------------------------------*/
 	@Override
 	public int getID()
 		{
-		return StateControl.STATE_MAIN;
+		return StateControl.STATE_LOBBY;
 		}
 	/*-----------------------------------------------------------------------------------------------------*/
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException
 		{
 		tank = (Tank) game;
-		Settings.initSettings();
-		DisplaysStateMain.initDisplays();
-		StateControl.initStateControl(tank);
-		music = new Music(Filenames.mainMusic);
+		DisplaysStateLobby.initDisplays();
 		}
 	/*-----------------------------------------------------------------------------------------------------*/
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException
 		{
 		AppGameContainer gc = (AppGameContainer) container;
-		gc.setDisplayMode(Settings.mainScreenWidth, Settings.mainScreenHeight, false);
+		gc.setDisplayMode(Settings.lobbyScreenWidth, Settings.lobbyScreenHeight, false);
 		StateControl.addCurrentState(getID());
-		Settings.currentScreenWidth = Settings.mainScreenWidth;
-		Settings.currentScreenHeight = Settings.mainScreenHeight;
-		DisplaysStateMain.positionDisplays();
-		DisplaysNavigationalButtons.positionButtons();
-		DisplaysButtonsHelpNavigation.positionButtons();
-		if(!music.playing() && Settings.playMusic == C.YES)
-			music.loop();
+		Settings.currentScreenHeight = Settings.lobbyScreenHeight;
+		Settings.currentScreenWidth = Settings.lobbyScreenWidth;
+		DisplaysStateLobby.positionDisplays();
 		}
 	/*-----------------------------------------------------------------------------------------------------*/
 	@Override
@@ -47,7 +43,6 @@ public class StateMain extends BasicGameState
 			{
 			if(DisplaysPopupBox.charactersEntered < DisplaysPopupBox.maxCharacters)
 				{
-//				System.out.printf("popupDisplayed: %d < %d\n", DisplaysPopupBox.charactersEntered, DisplaysPopupBox.maxCharacters);
 				DisplaysPopupBox.getPopupInput(input);
 				}
 			}
@@ -57,7 +52,7 @@ public class StateMain extends BasicGameState
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException
 		{
-		DisplaysStateMain.renderDisplays(g);
+		DisplaysStateLobby.renderDisplays(g);
 		}
 	/*-----------------------------------------------------------------------------------------------------*/
 	@Override
@@ -66,13 +61,11 @@ public class StateMain extends BasicGameState
 		Inputs.localxMouse = x;
 		Inputs.localyMouse = y;
 		Inputs.processMouseInput();
-		Inputs.localxMouse = -1;
-		Inputs.localyMouse = -1;
+		//Playing around with sending messages
+		//Send mouse coords over the sever to socketClient
+		//NetworkClientMain clientMain=new NetworkClientMain();
+		//clientMain.displayMessageToServer(" " + x + " , " +y);
+		//NetworkServerWriteThread sw = new NetworkServerWriteThread();
+		//sw.displayMessageToClients(" " + x + " , " +y);
 		}
-	/*-----------------------------------------------------------------------------------------------------*/
-//	@Override
-//	public void keyPressed(int key, char c)
-//		{
-////		System.out.printf("'%c' '%d'\n", c, key);
-//		}
 	}

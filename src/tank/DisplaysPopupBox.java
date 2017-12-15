@@ -70,7 +70,7 @@ public class DisplaysPopupBox
 			title.string = Strings.enterIPAddress;
 			maxCharacters = 25;
 			innerFillWidth = 300;
-			enterWidth = 125;
+			enterWidth = 150;
 			}
 		else if(type == C.POPUP_CHAT)
 			{
